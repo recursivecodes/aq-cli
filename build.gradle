@@ -1,0 +1,81 @@
+plugins {
+    id("groovy") 
+    id("com.github.johnrengelman.shadow") version "7.0.0"
+    id("io.micronaut.application") version "2.0.6"
+}
+
+version = "0.1"
+group = "codes.recursive"
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    /*
+    maven {
+        url "https://s01.oss.sonatype.org/content/repositories/snapshots"
+    }
+    */
+}
+
+micronaut {
+    testRuntime("spock2")
+    processing {
+        incremental(true)
+        annotations("codes.recursive.*")
+    }
+}
+
+dependencies {
+    annotationProcessor("io.micronaut:micronaut-inject-java")
+    annotationProcessor("info.picocli:picocli-codegen")
+    implementation("info.picocli:picocli")
+    implementation("io.micronaut:micronaut-runtime")
+    implementation("io.micronaut.picocli:micronaut-picocli")
+    implementation("javax.annotation:javax.annotation-api")
+    implementation("ch.qos.logback:logback-classic")
+    compileOnly("org.graalvm.nativeimage:svm")
+
+    implementation("io.micronaut:micronaut-validation")
+
+    implementation("io.micronaut.jms:micronaut-jms-core")
+    implementation("javax.transaction:jta:1.1")
+    implementation("com.oracle.database.messaging:aqapi:19.3.0.0")
+    implementation("io.micronaut.sql:micronaut-jdbc-ucp:4.1.1-SNAPSHOT")
+    implementation("io.micronaut.oraclecloud:micronaut-oraclecloud-sdk")
+    implementation("io.micronaut.oraclecloud:micronaut-oraclecloud-atp:2.0.0")
+    implementation(enforcedPlatform("com.oracle.database.jdbc:ojdbc-bom:21.1.0.0"))
+    implementation("com.oracle.database.jdbc:ojdbc11")
+    implementation("com.oracle.database.jdbc:ucp")
+    // Additional Jars for using Oracle Wallets
+    implementation("com.oracle.database.security:oraclepki")
+    implementation("com.oracle.database.security:osdt_core")
+    implementation("com.oracle.database.security:osdt_cert")
+
+    testImplementation("io.micronaut:micronaut-http-client")
+
+}
+
+nativeImage {
+    imageName("aq")
+    args = [
+            '-H:+ReportExceptionStackTraces',
+            '-H:+AddAllCharsets',
+            '-H:IncludeResources=logback.xml|application.yml|bootstrap.yml',
+            '--initialize-at-build-time=oracle.i18n.text.converter,oracle.xml.parser.v2,oracle.xml.util,oracle.sql',
+            '--initialize-at-run-time=io.micronaut.oraclecloud.atp.jdbc.upc,oracle.xml.util.UnicodeUtil,oracle.jdbc,oracle.jdbc.pool,oracle.ucp.admin',
+            '--report-unsupported-elements-at-runtime',
+            '--verbose'
+    ]
+}
+
+
+application {
+    mainClass.set("codes.recursive.AqCliCommand")
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("11")
+    targetCompatibility = JavaVersion.toVersion("11")
+}
+
+
+
