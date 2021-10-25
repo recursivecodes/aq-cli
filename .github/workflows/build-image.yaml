@@ -188,7 +188,7 @@ jobs:
         env:
           JAVA_HOME: ./graalvm-ce-java11-21.2.0
         run: |
-          ./gradlew nativeImage --stack-trace --info --debug
+          ./gradlew nativeImage --stacktrace
 
       - name: 'Get Release URL'
         if: contains(github.ref, 'v')
