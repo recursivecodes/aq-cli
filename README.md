@@ -112,7 +112,7 @@ Dequeue messages with automatic wallet download.
   -P DEFAULT \
   -i ~/.oci/config 
 ```
-Enqueue a message via a TLS connection.
+Dequeue a message via a TLS connection.
 
 ```shell
 ./aq dequeue \

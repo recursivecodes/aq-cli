@@ -27,6 +27,6 @@ public class AqJmsConfig {
 
     @JMSConnectionFactory("aqConnectionFactory")
     public ConnectionFactory connectionFactory() throws JMSException {
-        return AQjmsFactory.getConnectionFactory(dataSource);
+        return AQjmsFactory.getQueueConnectionFactory(dataSource);
     }
 }
