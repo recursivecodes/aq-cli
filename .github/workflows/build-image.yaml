@@ -184,12 +184,12 @@ jobs:
           name: 'aq-cli-${{env.VERSION}}-all.jar'
 
       - name: 'Build Native Image'
-        shell: powershell
+        shell: cmd
         env:
           JAVA_HOME: ./graalvm-ce-java11-21.2.0
         run: |
-          ./gradlew nativeImage --stacktrace
-
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
+          ./graalvm-ce-java11-21.2.0/bin/native-image -H:+ReportExceptionStackTraces -H:+AddAllCharsets -H:IncludeResources=logback.xml|application.yml|bootstrap.yml --initialize-at-build-time=oracle.i18n.text.converter,oracle.xml.parser.v2,oracle.xml.util,oracle.sql --initialize-at-run-time=io.micronaut.oraclecloud.atp.jdbc.upc,oracle.xml.util.UnicodeUtil,oracle.jdbc,oracle.jdbc.pool,oracle.ucp.admin --report-unsupported-elements-at-runtime
       - name: 'Get Release URL'
         if: contains(github.ref, 'v')
         uses: actions/download-artifact@v2-preview

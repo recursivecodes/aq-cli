@@ -63,8 +63,7 @@ nativeImage {
             '-H:IncludeResources=logback.xml|application.yml|bootstrap.yml',
             '--initialize-at-build-time=oracle.i18n.text.converter,oracle.xml.parser.v2,oracle.xml.util,oracle.sql',
             '--initialize-at-run-time=io.micronaut.oraclecloud.atp.jdbc.upc,oracle.xml.util.UnicodeUtil,oracle.jdbc,oracle.jdbc.pool,oracle.ucp.admin',
-            '--report-unsupported-elements-at-runtime',
-            '--verbose'
+            '--report-unsupported-elements-at-runtime'
     ]
 }
 
