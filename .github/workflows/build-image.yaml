@@ -107,7 +107,7 @@ jobs:
 
       - name: 'Get Version Number'
         run: |
-          echo "VERSION=$(./gradlew properties -q | grep "version:" | awk '{print $2}')" >> $GITHUB.ENV
+          echo "VERSION=$(./gradlew properties -q | grep "version:" | awk '{print $2}')" >> $GITHUB_ENV
 
       - name: 'Get JAR Artifact'
         uses: actions/download-artifact@v2-preview
@@ -167,7 +167,7 @@ jobs:
 
       - name: 'Install Native Image'
         run: |
-          graalvm-ce-java11-20.1.0\bin\gu.cmd install native-image
+          graalvm-ce-java11-21.2.0\bin\gu.cmd install native-image
 
       - name: 'Set up Visual C Build Tools Workload for Visual Studio 2017 Build Tools'
         run: |
