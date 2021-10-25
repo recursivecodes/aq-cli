@@ -32,7 +32,7 @@ jobs:
       - name: 'Publish JAR'
         uses: actions/upload-artifact@v2-preview
         with:
-          name: 'aq-cli${{env.VERSION}}-all.jar'
+          name: 'aq-cli-${{env.VERSION}}-all.jar'
           path: build/libs/*-all.jar
 
       - name: 'Create Release'
