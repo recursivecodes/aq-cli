@@ -40,7 +40,7 @@ dependencies {
     implementation("io.micronaut.jms:micronaut-jms-core")
     implementation("javax.transaction:jta:1.1")
     implementation("com.oracle.database.messaging:aqapi:19.3.0.0")
-    implementation("io.micronaut.sql:micronaut-jdbc-ucp:4.1.1-SNAPSHOT")
+    implementation("io.micronaut.sql:micronaut-jdbc-ucp:4.0.2")
     implementation("io.micronaut.oraclecloud:micronaut-oraclecloud-sdk")
     implementation("io.micronaut.oraclecloud:micronaut-oraclecloud-atp:2.0.0")
     implementation(enforcedPlatform("com.oracle.database.jdbc:ojdbc-bom:21.1.0.0"))
