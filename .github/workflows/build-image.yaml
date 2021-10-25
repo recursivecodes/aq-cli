@@ -184,12 +184,11 @@ jobs:
           name: 'aq-cli-${{env.VERSION}}-all.jar'
 
       - name: 'Build Native Image'
-        shell: cmd
+        shell: powershell
         env:
           JAVA_HOME: ./graalvm-ce-java11-21.2.0
         run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
-          ./gradlew.bat nativeImage
+          ./gradlew nativeImage --stack-trace --info --debug
 
       - name: 'Get Release URL'
         if: contains(github.ref, 'v')
