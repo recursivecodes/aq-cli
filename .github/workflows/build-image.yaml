@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - "v*"
-    branches:
-      - 'main'
 
 jobs:
   build-jar-job:
@@ -150,3 +148,4 @@ jobs:
           asset_name: 'aq-cli-${{env.VERSION}}-${{matrix.label}}'
           asset_path: 'aq-cli-${{env.VERSION}}-all'
           asset_content_type: application/octet-stream
+
