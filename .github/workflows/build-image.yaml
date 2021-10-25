@@ -133,8 +133,8 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v2-preview
         with:
-          name: 'aq-cli-${{env.VERSION}}-${{matrix.label}}'
-          path: 'aq-cli-${{env.VERSION}}-all'
+          name: 'aq-${{matrix.label}}'
+          path: 'aq'
 
       - name: 'Release Native Image Asset'
         if: success() && contains(github.ref, 'v')
@@ -199,8 +199,8 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v2-preview
         with:
-          name: 'aq-cli-${{env.VERSION}}-windows.exe'
-          path: 'aq-cli-${{env.VERSION}}-all.exe'
+          name: 'aq.exe'
+          path: 'aq.exe'
 
       - name: 'Release Windows Image Asset'
         if: success() && contains(github.ref, 'v')
