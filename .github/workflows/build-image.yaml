@@ -134,7 +134,7 @@ jobs:
         uses: actions/upload-artifact@v2-preview
         with:
           name: 'aq-${{matrix.label}}'
-          path: 'aq'
+          path: 'build/native-image/aq'
 
       - name: 'Release Native Image Asset'
         if: success() && contains(github.ref, 'v')
@@ -200,7 +200,7 @@ jobs:
         uses: actions/upload-artifact@v2-preview
         with:
           name: 'aq.exe'
-          path: 'aq.exe'
+          path: 'build/native-image/aq.exe'
 
       - name: 'Release Windows Image Asset'
         if: success() && contains(github.ref, 'v')
