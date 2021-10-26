@@ -1,6 +1,5 @@
 package codes.recursive.queue;
 
-import io.micronaut.context.annotation.Requires;
 import io.micronaut.jms.annotations.JMSProducer;
 import io.micronaut.jms.annotations.Queue;
 import io.micronaut.messaging.annotation.MessageBody;
