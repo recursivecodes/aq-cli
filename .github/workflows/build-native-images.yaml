@@ -150,7 +150,7 @@ jobs:
     needs: [build-jar-job]
     name: 'Build Windows Image'
 
-    runs-on: self-hosted
+    runs-on: windows-runner
     steps:
       - uses: actions/checkout@v2
       - uses: ilammy/msvc-dev-cmd@v1.9.0
