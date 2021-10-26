@@ -59,7 +59,6 @@ nativeImage {
     imageName("aq")
     args = [
             '-H:+ReportExceptionStackTraces',
-            '-J-Xmx8g',
             '-H:+AddAllCharsets',
             '-H:IncludeResources=logback.xml|application.yml|bootstrap.yml',
             '--initialize-at-build-time=oracle.i18n.text.converter,oracle.xml.parser.v2,oracle.xml.util,oracle.sql',
