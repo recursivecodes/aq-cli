@@ -163,7 +163,7 @@ jobs:
 
       - name: 'Get Version Number'
         run: |
-          echo "VERSION=$(./gradlew properties -q | findstr "version:" | %{($_ -split ":")[1]} | %{$_.Trim()})" >> $GITHUB_ENV
+          echo "VERSION=$(./gradlew properties -q | findstr "version:" | %{($_ -split ":")[1]} | %{$_.Trim()})" >> $env:GITHUB_ENV
         shell: powershell
 
       - name: 'Get Jar Artifact'
@@ -190,7 +190,7 @@ jobs:
       - name: 'Get Upload URL'
         if: contains(github.ref, 'v')
         run: |
-          echo "UPLOAD_URL=$(cat upload_url.txt)" >> $GITHUB_ENV
+          echo "UPLOAD_URL=$(cat upload_url.txt)" >> $env:GITHUB_ENV
         shell: powershell
 
       - name: 'Publish Windows Image'
