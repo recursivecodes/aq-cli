@@ -163,7 +163,7 @@ jobs:
 
       - name: 'Get Version Number'
         run: |
-          echo "VERSION=$(./gradlew properties -q | findstr "version:" | %{($_ -split ":")[1]}" >> $GITHUB_ENV
+          echo "VERSION=$(./gradlew properties -q | findstr "version:" | %{($_ -split ":")[1]} | %{$_.Trim()}" >> $GITHUB_ENV
         shell: powershell
 
       - name: 'Get Jar Artifact'
