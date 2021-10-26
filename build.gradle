@@ -26,12 +26,12 @@ micronaut {
 }
 
 dependencies {
-    annotationProcessor("io.micronaut:micronaut-inject-java")
-    annotationProcessor("info.picocli:picocli-codegen")
+    //annotationProcessor("io.micronaut:micronaut-inject-java")
+    //annotationProcessor("info.picocli:picocli-codegen")
     implementation("info.picocli:picocli")
     implementation("io.micronaut:micronaut-runtime")
     implementation("io.micronaut.picocli:micronaut-picocli")
-    implementation("javax.annotation:javax.annotation-api")
+    //implementation("javax.annotation:javax.annotation-api")
     implementation("ch.qos.logback:logback-classic")
     compileOnly("org.graalvm.nativeimage:svm")
 
@@ -45,7 +45,6 @@ dependencies {
     implementation("io.micronaut.oraclecloud:micronaut-oraclecloud-atp:2.0.0")
     implementation(enforcedPlatform("com.oracle.database.jdbc:ojdbc-bom:21.1.0.0"))
     implementation("com.oracle.database.jdbc:ojdbc11")
-    implementation("com.oracle.database.jdbc:ucp")
     // Additional Jars for using Oracle Wallets
     implementation("com.oracle.database.security:oraclepki")
     implementation("com.oracle.database.security:osdt_core")
