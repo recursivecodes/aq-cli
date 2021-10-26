@@ -1,7 +1,6 @@
 package codes.recursive;
 
 import codes.recursive.queue.AqProducer;
-import io.micronaut.context.annotation.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;

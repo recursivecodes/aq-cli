@@ -3,7 +3,6 @@ package codes.recursive.queue;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.core.annotation.ReflectiveAccess;
-import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.jms.annotations.JMSConnectionFactory;
 import oracle.jms.AQjmsFactory;
 

@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-jar-job:
-    name: 'Build JAR'
+    name: 'Build Jar'
     runs-on: ubuntu-latest
 
     steps:
@@ -20,7 +20,7 @@ jobs:
         with:
           java-version: 11
 
-      - name: 'Build JAR'
+      - name: 'Build Jar'
         run: |
           ./gradlew assemble
 
@@ -28,7 +28,7 @@ jobs:
         run: |
           echo "VERSION=$(./gradlew properties -q | grep "version:" | awk '{print $2}')" >> $GITHUB_ENV
 
-      - name: 'Publish JAR'
+      - name: 'Publish Jar'
         uses: actions/upload-artifact@v2-preview
         with:
           name: 'aq-cli-${{env.VERSION}}-all.jar'
@@ -109,7 +109,7 @@ jobs:
         run: |
           echo "VERSION=$(./gradlew properties -q | grep "version:" | awk '{print $2}')" >> $GITHUB_ENV
 
-      - name: 'Get JAR Artifact'
+      - name: 'Get Jar Artifact'
         uses: actions/download-artifact@v2-preview
         with:
           name: 'aq-cli-${{env.VERSION}}-all.jar'
@@ -160,7 +160,7 @@ jobs:
       - uses: ayltai/setup-graalvm@v1
         with:
           java-version: 11
-          graalvm-version: 21.1.0
+          graalvm-version: 21.2.0
           native-image: true
 
       - name: 'Get Version Number'
@@ -168,7 +168,7 @@ jobs:
           echo "VERSION=$(./gradlew properties -q | grep "version:" | awk '{print $2}')" >> $GITHUB_ENV
         shell: bash
 
-      - name: 'Get JAR Artifact'
+      - name: 'Get Jar Artifact'
         uses: actions/download-artifact@v2-preview
         with:
           name: 'aq-cli-${{env.VERSION}}-all.jar'
