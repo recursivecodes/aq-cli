@@ -1,14 +1,12 @@
 package codes.recursive;
 
 import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.spi.Configurator;
 import codes.recursive.queue.AqConsumer;
 import codes.recursive.queue.AqProducer;
 import io.micronaut.configuration.picocli.PicocliRunner;
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.cli.CommandLine;
 import oracle.jdbc.driver.OracleDriver;
-import oracle.jdbc.driver.OracleLog;
 import oracle.ucp.admin.UniversalConnectionPoolManager;
 import oracle.ucp.admin.UniversalConnectionPoolManagerImpl;
 import org.slf4j.Logger;
@@ -17,13 +15,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
 import javax.inject.Inject;
-import javax.management.MBeanServer;
-import javax.management.MBeanServerFactory;
-import javax.management.MBeanServerPermission;
-import javax.management.ObjectName;
 import javax.sql.DataSource;
-import java.lang.management.ManagementFactory;
-import java.security.Permission;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
