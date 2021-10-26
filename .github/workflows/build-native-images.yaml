@@ -76,9 +76,9 @@ jobs:
     needs: [build-jar-job]
     strategy:
       matrix:
-        os: ['ubuntu-latest', 'macos-latest']
+        os: ['self-hosted', 'macos-latest']
         include:
-          - os: 'ubuntu-latest'
+          - os: 'self-hosted'
             label: 'linux'
           - os: 'macos-latest'
             label: 'mac'
