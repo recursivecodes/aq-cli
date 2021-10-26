@@ -142,8 +142,8 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
           upload_url: ${{env.UPLOAD_URL}}
-          asset_name: 'aq-cli-${{matrix.label}}'
-          asset_path: 'aq-cli-${{matrix.label}}'
+          asset_name: 'aq-${{matrix.label}}'
+          asset_path: 'build/native-image/aq'
           asset_content_type: application/octet-stream
 
   build-windows-image:
@@ -208,6 +208,6 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
           upload_url: ${{env.UPLOAD_URL}}
-          asset_name: 'aq.exe'
+          asset_path: 'build/native-image/aq.exe'
           asset_path: 'aq.exe'
           asset_content_type: application/octet-stream
