@@ -164,7 +164,7 @@ jobs:
       - name: 'Get Version Number'
         run: |
           echo "VERSION=$(./gradlew properties -q | grep "version:" | awk '{print $2}')" >> $GITHUB_ENV
-        shell: bash
+        shell: powershell
 
       - name: 'Get Jar Artifact'
         uses: actions/download-artifact@v2-preview
@@ -191,7 +191,7 @@ jobs:
         if: contains(github.ref, 'v')
         run: |
           echo "UPLOAD_URL=$(cat upload_url.txt)" >> $GITHUB_ENV
-        shell: bash
+        shell: powershell
 
       - name: 'Publish Windows Image'
         if: success()
