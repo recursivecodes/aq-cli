@@ -125,26 +125,6 @@ public class AqCliCommand implements Runnable {
             String jdbcUrl = "jdbc:oracle:thin:@";
             Boolean hasConnectString = false;
             Boolean hasHostPortService = false;
-            Boolean hasOcid = false;
-
-            if(options.containsKey("o") || options.containsKey("ocid")) {
-                if(options.containsKey("w") && options.containsKey("wallet-password")) {
-                    if(options.containsKey("w")) System.setProperty("datasources.default.walletPassword", options.get("w").toString());
-                    if(options.containsKey("wallet-password")) System.setProperty("datasources.default.walletPassword", options.get("wallet-password").toString());
-                }
-                else {
-                    // set a default wallet password
-                    System.setProperty("datasources.default.walletPassword", "Wallet_" + UUID.randomUUID().toString().replace("-", ""));
-                }
-                if(options.containsKey("o")) System.setProperty("datasources.default.ocid", options.get("o").toString());
-                if(options.containsKey("ocid")) System.setProperty("datasources.default.ocid", options.get("ocid").toString());
-                hasOcid = true;
-            }
-
-            if(options.containsKey("O")) System.setProperty("oci.config.profile", options.get("O").toString());
-            if(options.containsKey("oci-profile")) System.setProperty("oci.config.profile", options.get("oci-profile").toString());
-            if(options.containsKey("i")) System.setProperty("oci.config.path", options.get("i").toString());
-            if(options.containsKey("oci-profile-path")) System.setProperty("oci.config.path", options.get("oci-profile-path").toString());
 
             if(options.containsKey("c") || options.containsKey("connect-string")) {
                 hasConnectString = true;
@@ -167,14 +147,12 @@ public class AqCliCommand implements Runnable {
                 if(options.containsKey("service-name")) jdbcUrl = jdbcUrl + options.get("service-name").toString();
             }
 
-            if(!hasOcid && !hasConnectString && !hasHostPortService) {
+            if(!hasConnectString && !hasHostPortService) {
                 throw new picocli.CommandLine.ParameterException(new picocli.CommandLine(new AqCliCommand()),
-                        "To connect, you must use either automatic wallet download by passing an OCID {'-o', '--ocid'} or use a direct connection with either a connect string {'-c', '--connect-string'} or a host {'H', '--host'}, port {'-P', '--port'}, and service name {'s', '--service-name'}.");
+                        "You must pass either a connect string {'-c', '--connect-string'} or a host {'H', '--host'}, port {'-P', '--port'}, and service name {'s', '--service-name'}.");
             }
             else {
-                if(hasConnectString || hasHostPortService) {
-                    System.setProperty("datasources.default.url", jdbcUrl);
-                }
+                System.setProperty("datasources.default.url", jdbcUrl);
             }
 
             if(options.containsKey("u")) System.setProperty("datasources.default.username", options.get("u").toString());
@@ -184,6 +162,23 @@ public class AqCliCommand implements Runnable {
             if(options.containsKey("q")) System.setProperty("aq.queue.name", options.get("q").toString());
             if(options.containsKey("queue-name")) System.setProperty("aq.queue.name", options.get("queue-name").toString());
 
+            if(options.containsKey("o") || options.containsKey("ocid")) {
+                if(options.containsKey("w") && options.containsKey("wallet-password")) {
+                    if(options.containsKey("w")) System.setProperty("datasources.default.walletPassword", options.get("w").toString());
+                    if(options.containsKey("wallet-password")) System.setProperty("datasources.default.walletPassword", options.get("wallet-password").toString());
+                }
+                else {
+                    // set a default wallet password
+                    System.setProperty("datasources.default.walletPassword", "Wallet_" + UUID.randomUUID().toString().replace("-", ""));
+                }
+                if(options.containsKey("o")) System.setProperty("datasources.default.ocid", options.get("o").toString());
+                if(options.containsKey("ocid")) System.setProperty("datasources.default.ocid", options.get("ocid").toString());
+            }
+
+            if(options.containsKey("O")) System.setProperty("oci.config.profile", options.get("O").toString());
+            if(options.containsKey("oci-profile")) System.setProperty("oci.config.profile", options.get("oci-profile").toString());
+            if(options.containsKey("i")) System.setProperty("oci.config.path", options.get("i").toString());
+            if(options.containsKey("oci-profile-path")) System.setProperty("oci.config.path", options.get("oci-profile-path").toString());
             LOG.info("Connecting to queue...");
         }
 
