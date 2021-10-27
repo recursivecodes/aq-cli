@@ -175,7 +175,6 @@ Usage: aq-cli [-hvV] [-c=<connectString>] [-H=<host>] [-i=<ociProfilePath>]
                       The DB service name.
   -u, --username=<username>
                       The database user's username
-  -U, --url=<url>     The DB
   -v, --verbose       Enable verbose output
   -V, --version       Print version information and exit.
   -w, --wallet-password=<walletPassword>
