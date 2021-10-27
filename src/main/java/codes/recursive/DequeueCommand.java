@@ -8,6 +8,7 @@ import picocli.CommandLine;
 
 @CommandLine.Command(name = "dequeue", description = "Dequeues messages from AQ (until interrupted with CTRL+C)")
 @Requires(property = "consumer.enabled")
+@Requires(missingProperty = "aq.help")
 @Introspected
 public class DequeueCommand implements Runnable  {
     private static final Logger LOG = LoggerFactory.getLogger(DequeueCommand.class);

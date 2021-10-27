@@ -28,7 +28,7 @@ java -jar build/libs/aq-cli-0.1-all.jar \
   -p Passw3rd \
   -w Wall3tPassw3rd \
   -q AQDEMOADMIN.EVENT_QUEUE \
-  -P DEFAULT \
+  -O DEFAULT \
   -i ~/.oci/config 
 ```
 Enqueue a message via a TLS connection.
@@ -52,7 +52,7 @@ java -jar build/libs/aq-cli-0.1-all.jar \
   -p Passw3rd \
   -w Wall3tPassw3rd \
   -q AQDEMOADMIN.EVENT_QUEUE \
-  -P DEFAULT \
+  -O DEFAULT \
   -i ~/.oci/config 
 ```
 Enqueue a message via a TLS connection.
@@ -87,7 +87,7 @@ Enqueue a message with automatic wallet download.
   -p Passw3rd \
   -w Wall3tPassw3rd \
   -q AQDEMOADMIN.EVENT_QUEUE \
-  -P DEFAULT \
+  -O DEFAULT \
   -i ~/.oci/config 
 ```
 Enqueue a message via a TLS connection.
@@ -109,7 +109,7 @@ Dequeue messages with automatic wallet download.
   -p Passw3rd \
   -w Wall3tPassw3rd \
   -q AQDEMOADMIN.EVENT_QUEUE \
-  -P DEFAULT \
+  -O DEFAULT \
   -i ~/.oci/config 
 ```
 Dequeue a message via a TLS connection.
@@ -128,7 +128,7 @@ To get help, execute the CLI with `-h`. It will produce the following output:
 
 ```shell
 Usage: aq-cli [-hvV] [-i=<ociProfilePath>] [-o=<ocid>] -p=<password>
-              [-P=<ociProfile>] -q=<queueName> -u=<username> [-U=<url>]
+              [-O=<ociProfile>] -q=<queueName> -u=<username> [-U=<url>]
               [-w=<walletPassword>] [COMMAND]
 ...
   -h, --help          Show this help message and exit.
@@ -138,7 +138,7 @@ Usage: aq-cli [-hvV] [-i=<ociProfilePath>] [-o=<ocid>] -p=<password>
   -o, --ocid=<ocid>   The ADB OCID
   -p, --password=<password>
                       The ADB Password
-  -P, --oci-profile=<ociProfile>
+  -O, --oci-profile=<ociProfile>
                       The OCI Profile to use when using automatic wallet
                         download
   -q, --queue-name=<queueName>

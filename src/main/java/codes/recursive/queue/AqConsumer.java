@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 @JMSListener("aqConnectionFactory")
 @Requires(property = "consumer.enabled")
+@Requires(missingProperty = "aq.help")
 public class AqConsumer {
     private static final Logger LOG = LoggerFactory.getLogger(AqConsumer.class);
     @Queue(value = "${aq.queue.name}", concurrency = "1-5")
