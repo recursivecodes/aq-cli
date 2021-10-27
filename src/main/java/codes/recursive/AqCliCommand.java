@@ -14,12 +14,6 @@ import org.slf4j.LoggerFactory;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
-import javax.inject.Inject;
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
@@ -40,7 +34,7 @@ public class AqCliCommand implements Runnable {
     boolean verbose;
 
     public String ocid;
-    @Option(names = {"-o", "--ocid"}, description = "The ADB OCID", required = false, scope = picocli.CommandLine.ScopeType.INHERIT)
+    @Option(names = {"-o", "--ocid"}, description = "If provided, the ADB OCID will be used to automatically download Autonomous DB wallet", required = false, scope = picocli.CommandLine.ScopeType.INHERIT)
     public void setOcid(String ocid) {
         this.ocid = ocid;
     }
@@ -50,77 +44,143 @@ public class AqCliCommand implements Runnable {
         this.walletPassword = walletPassword;
     }
     public String username;
-    @Option(names = {"-u", "--username"}, description = "The ADB Username", required = true, scope = picocli.CommandLine.ScopeType.INHERIT)
+    @Option(names = {"-u", "--username"}, description = "The database user's username", required = true, scope = picocli.CommandLine.ScopeType.INHERIT)
     public void setUsername(String username) {
         this.username = username;
     }
     public String password;
-    @Option(names = {"-p", "--password"}, description = "The ADB Password", required = true, scope = picocli.CommandLine.ScopeType.INHERIT)
+    @Option(names = {"-p", "--password"}, description = "The database user's password", required = true, scope = picocli.CommandLine.ScopeType.INHERIT)
     public void setPassword(String password) {
         this.password = password;
     }
     public String queueName;
-    @Option(names = {"-q", "--queue-name"}, description = "The ADB Queue Name", required = true, scope = picocli.CommandLine.ScopeType.INHERIT)
+    @Option(names = {"-q", "--queue-name"}, description = "The AQ queue name", required = true, scope = picocli.CommandLine.ScopeType.INHERIT)
     public void setQueueName(String queueName) {
         this.queueName = queueName;
     }
+
     public String url;
-    @Option(names = {"-U", "--url"}, description = "The ADB URL", required = false, scope = picocli.CommandLine.ScopeType.INHERIT)
+    @Option(names = {"-U", "--url"}, description = "The DB ", required = false, scope = picocli.CommandLine.ScopeType.INHERIT)
     public void setUrl(String url) {
         this.url = url;
     }
+
+    public String connectString;
+    @Option(names = {"-c", "--connect-string"}, description = "The connection string to use to connect to the DB.", required = false, scope = picocli.CommandLine.ScopeType.INHERIT)
+    public void setConnectString(String connectString) {
+        this.connectString = connectString;
+    }
+
+    public String host;
+    @Option(names = {"-H", "--host"}, description = "The DB host name.", required = false, scope = picocli.CommandLine.ScopeType.INHERIT)
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public String port;
+    @Option(names = {"-P", "--port"}, description = "The DB port.", required = false, scope = picocli.CommandLine.ScopeType.INHERIT)
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    public String serviceName;
+    @Option(names = {"-s", "--service-name"}, description = "The DB service name.", required = false, scope = picocli.CommandLine.ScopeType.INHERIT)
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    /* todo - break into connect string and host/port/service */
+
     public String ociProfile;
-    @Option(names = {"-P", "--oci-profile"}, description = "The OCI Profile to use when using automatic wallet download", required = false, scope = picocli.CommandLine.ScopeType.INHERIT)
+    @Option(names = {"-O", "--oci-profile"}, description = "The OCI profile to use when using automatic wallet download", required = false, scope = picocli.CommandLine.ScopeType.INHERIT)
     public void setOciProfile(String ociProfile) {
         this.ociProfile = ociProfile;
     }
     public String ociProfilePath;
-    @Option(names = {"-i", "--oci-profile-path"}, description = "The path to the OCI Profile to use when using automatic wallet download", required = false, scope = picocli.CommandLine.ScopeType.INHERIT)
+    @Option(names = {"-i", "--oci-profile-path"}, description = "The path to the OCI profile to use when using automatic wallet download", required = false, scope = picocli.CommandLine.ScopeType.INHERIT)
     public void setOciProfilePath(String ociProfilePath) {
         this.ociProfilePath = ociProfilePath;
     }
 
-    @Inject
-    public DataSource dataSource;
-
     public static void main(String[] args) throws Exception {
-        System.setProperty("oracle.jdbc.fanEnabled", "false");
-        if(Arrays.asList(args).contains("dequeue")) {
-            System.setProperty("consumer.enabled", "true");
-            System.setProperty("oracle.jms.maxSleepTime", "1000");
-        }
 
         CommandLine parsedArgs = CommandLine.parse(args);
         Map<String, Object> options = parsedArgs.getUndeclaredOptions();
 
-        if(options.containsKey("u")) System.setProperty("datasources.default.username", options.get("u").toString());
-        if(options.containsKey("username")) System.setProperty("datasources.default.username", options.get("username").toString());
-        if(options.containsKey("p")) System.setProperty("datasources.default.password", options.get("p").toString());
-        if(options.containsKey("password")) System.setProperty("datasources.default.password", options.get("password").toString());
-        if(options.containsKey("q")) System.setProperty("aq.queue.name", options.get("q").toString());
-        if(options.containsKey("queue-name")) System.setProperty("aq.queue.name", options.get("queue-name").toString());
+        Boolean isHelp = false;
+        if( options.size() == 0 || options.containsKey("h") || options.containsKey("help") ) {
+            System.setProperty("aq.help", "true");
+            isHelp = true;
+        }
+        if(!isHelp) {
+            System.setProperty("datasources.default.driver-class-name", "oracle.jdbc.driver.OracleDriver");
+            System.setProperty("datasources.default.connection-factory-class-name", "oracle.jdbc.pool.OracleDataSource");
 
-        if(options.containsKey("o") || options.containsKey("ocid")) {
-            if(options.containsKey("w") && options.containsKey("wallet-password")) {
-                if(options.containsKey("w")) System.setProperty("datasources.default.walletPassword", options.get("w").toString());
-                if(options.containsKey("wallet-password")) System.setProperty("datasources.default.walletPassword", options.get("wallet-password").toString());
+            System.setProperty("oracle.jdbc.fanEnabled", "false");
+            if(Arrays.asList(args).contains("dequeue")) {
+                System.setProperty("consumer.enabled", "true");
+                System.setProperty("oracle.jms.maxSleepTime", "1000");
+            }
+
+            String jdbcUrl = "jdbc:oracle:thin:@";
+            Boolean hasConnectString = false;
+            Boolean hasHostPortService = false;
+
+            if(options.containsKey("c") || options.containsKey("connect-string")) {
+                hasConnectString = true;
+                if(options.containsKey("c")) jdbcUrl = jdbcUrl + options.get("c").toString();
+                if(options.containsKey("connect-string")) jdbcUrl = jdbcUrl + options.get("connect-string").toString();
+            }
+            if(
+                    (options.containsKey("H") || options.containsKey("host")) &&
+                    (options.containsKey("P") || options.containsKey("port")) &&
+                    (options.containsKey("s") || options.containsKey("service-name"))
+            ) {
+                hasHostPortService = true;
+                if(options.containsKey("H")) jdbcUrl = jdbcUrl + options.get("H").toString();
+                if(options.containsKey("host")) jdbcUrl = jdbcUrl + options.get("host").toString();
+                jdbcUrl = jdbcUrl + ":";
+                if(options.containsKey("P")) jdbcUrl = jdbcUrl + options.get("P").toString();
+                if(options.containsKey("port")) jdbcUrl = jdbcUrl + options.get("port").toString();
+                jdbcUrl = jdbcUrl + "/";
+                if(options.containsKey("s")) jdbcUrl = jdbcUrl + options.get("s").toString();
+                if(options.containsKey("service-name")) jdbcUrl = jdbcUrl + options.get("service-name").toString();
+            }
+
+            if(!hasConnectString && !hasHostPortService) {
+                throw new picocli.CommandLine.ParameterException(new picocli.CommandLine(new AqCliCommand()),
+                        "You must pass either a connect string {'-c', '--connect-string'} or a host {'H', '--host'}, port {'-P', '--port'}, and service name {'s', '--service-name'}.");
             }
             else {
-                // set a default wallet password
-                System.setProperty("datasources.default.walletPassword", "Wallet_" + UUID.randomUUID().toString().replace("-", ""));
+                System.setProperty("datasources.default.url", jdbcUrl);
             }
-            if(options.containsKey("o")) System.setProperty("datasources.default.ocid", options.get("o").toString());
-            if(options.containsKey("ocid")) System.setProperty("datasources.default.ocid", options.get("ocid").toString());
-        }
-        if(options.containsKey("U") || options.containsKey("url")) {
-            if(options.containsKey("U")) System.setProperty("datasources.default.url", options.get("U").toString());
-            if(options.containsKey("url")) System.setProperty("datasources.default.url", options.get("url").toString());
-        }
 
-        if(options.containsKey("P")) System.setProperty("oci.config.profile", options.get("P").toString());
-        if(options.containsKey("oci-profile")) System.setProperty("oci.config.profile", options.get("oci-profile").toString());
-        if(options.containsKey("i")) System.setProperty("oci.config.path", options.get("i").toString());
-        if(options.containsKey("oci-profile-path")) System.setProperty("oci.config.path", options.get("oci-profile-path").toString());
+            if(options.containsKey("u")) System.setProperty("datasources.default.username", options.get("u").toString());
+            if(options.containsKey("username")) System.setProperty("datasources.default.username", options.get("username").toString());
+            if(options.containsKey("p")) System.setProperty("datasources.default.password", options.get("p").toString());
+            if(options.containsKey("password")) System.setProperty("datasources.default.password", options.get("password").toString());
+            if(options.containsKey("q")) System.setProperty("aq.queue.name", options.get("q").toString());
+            if(options.containsKey("queue-name")) System.setProperty("aq.queue.name", options.get("queue-name").toString());
+
+            if(options.containsKey("o") || options.containsKey("ocid")) {
+                if(options.containsKey("w") && options.containsKey("wallet-password")) {
+                    if(options.containsKey("w")) System.setProperty("datasources.default.walletPassword", options.get("w").toString());
+                    if(options.containsKey("wallet-password")) System.setProperty("datasources.default.walletPassword", options.get("wallet-password").toString());
+                }
+                else {
+                    // set a default wallet password
+                    System.setProperty("datasources.default.walletPassword", "Wallet_" + UUID.randomUUID().toString().replace("-", ""));
+                }
+                if(options.containsKey("o")) System.setProperty("datasources.default.ocid", options.get("o").toString());
+                if(options.containsKey("ocid")) System.setProperty("datasources.default.ocid", options.get("ocid").toString());
+            }
+
+            if(options.containsKey("O")) System.setProperty("oci.config.profile", options.get("O").toString());
+            if(options.containsKey("oci-profile")) System.setProperty("oci.config.profile", options.get("oci-profile").toString());
+            if(options.containsKey("i")) System.setProperty("oci.config.path", options.get("i").toString());
+            if(options.containsKey("oci-profile-path")) System.setProperty("oci.config.path", options.get("oci-profile-path").toString());
+            LOG.info("Connecting to queue...");
+        }
 
         if(options.containsKey("v") || options.containsKey("verbose")) {
             // do nothing... logging is enabled
@@ -141,20 +201,10 @@ public class AqCliCommand implements Runnable {
         UniversalConnectionPoolManager mgr = UniversalConnectionPoolManagerImpl.getUniversalConnectionPoolManager();
         mgr.setLogLevel(java.util.logging.Level.SEVERE);
 
-        LOG.info("Connecting to queue...");
         PicocliRunner.run(AqCliCommand.class, args);
     }
 
     public void run() {
-        Connection connection = null;
-        try {
-            connection = this.dataSource.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select sysdate from dual");
-            resultSet.next();
-            System.out.println(resultSet.getDate(1));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        if( System.getProperty("aq.help").toString().length() == 0 ) {}
     }
 }

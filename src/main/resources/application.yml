@@ -1,7 +1,3 @@
 micronaut:
   application:
     name: aqCli
-datasources:
-  default:
-    driver-class-name: oracle.jdbc.driver.OracleDriver
-    connection-factory-class-name: oracle.jdbc.pool.OracleDataSource

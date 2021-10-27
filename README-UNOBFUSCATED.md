@@ -28,7 +28,7 @@ java -jar build/libs/aq-cli-0.1-all.jar \
   -p Str0ngPassword! \
   -w Wall3tPassw3rd! \
   -q AQDEMOADMIN.EVENT_QUEUE \
-  -P DEFAULT \
+  -O DEFAULT \
   -i ~/.oci/config 
 ```
 Enqueue a message via a TLS connection.
@@ -52,7 +52,7 @@ java -jar build/libs/aq-cli-0.1-all.jar \
   -p Str0ngPassword! \
   -w Wall3tPassw3rd! \
   -q AQDEMOADMIN.EVENT_QUEUE \
-  -P DEFAULT \
+  -O DEFAULT \
   -i ~/.oci/config 
 ```
 Enqueue a message via a TLS connection.
@@ -85,9 +85,8 @@ Enqueue a message with automatic wallet download.
   -o ocid1.autonomousdatabase.oc1.phx.abyhqljrp22gdi2vqky6qn3z7s2gi7yklxa2t3yhvqlrs7h6ak665uvxctia \
   -u aqdemouser \
   -p Str0ngPassword! \
-  -w Wall3tPassw3rd! \
   -q AQDEMOADMIN.EVENT_QUEUE \
-  -P DEFAULT \
+  -O DEFAULT \
   -i ~/.oci/config 
 ```
 Enqueue a message via a TLS connection.
@@ -97,7 +96,19 @@ Enqueue a message via a TLS connection.
   -u aqdemouser \
   -p Str0ngPassword! \
   -q AQDEMOADMIN.EVENT_QUEUE \
-  -U 'jdbc:oracle:thin:@(description=(retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=adb.us-phoenix-1.oraclecloud.com))(connect_data=(service_name=hvg9nd7xibsaegv_demodb_low.atp.oraclecloud.com))(security=(ssl_server_cert_dn="CN=adwc.uscom-east-1.oraclecloud.com, OU=Oracle BMCS US, O=Oracle Corporation, L=Redwood City, ST=California, C=US")))'
+  -c '(description=(retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=adb.us-phoenix-1.oraclecloud.com))(connect_data=(service_name=hvg9nd7xibsaegv_demodb_low.atp.oraclecloud.com))(security=(ssl_server_cert_dn="CN=adwc.uscom-east-1.oraclecloud.com, OU=Oracle BMCS US, O=Oracle Corporation, L=Redwood City, ST=California, C=US")))'
+```
+
+Enqueue a message via host/port/service name (localhost XE).
+
+```shell
+./aq enqueue -m "{\"id\":1, \"localhost\": true}" \
+  -u aquser \
+  -p Str0ngPassword! \
+  -q AQADMIN.EVENT_QUEUE \
+  -H localhost \
+  -P 1521 \
+  -s XEPDB1
 ```
 
 Dequeue messages with automatic wallet download.
@@ -107,45 +118,64 @@ Dequeue messages with automatic wallet download.
   -o ocid1.autonomousdatabase.oc1.phx.abyhqljrp22gdi2vqky6qn3z7s2gi7yklxa2t3yhvqlrs7h6ak665uvxctia \
   -u aqdemouser \
   -p Str0ngPassword! \
-  -w Wall3tPassw3rd! \
   -q AQDEMOADMIN.EVENT_QUEUE \
-  -P DEFAULT \
+  -O DEFAULT \
   -i ~/.oci/config 
 ```
-Enqueue a message via a TLS connection.
+Dequeue a message via a TLS connection.
 
 ```shell
 ./aq dequeue \
   -u aqdemouser \
   -p Str0ngPassword! \
   -q AQDEMOADMIN.EVENT_QUEUE \
-  -U 'jdbc:oracle:thin:@(description=(retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=adb.us-phoenix-1.oraclecloud.com))(connect_data=(service_name=hvg9nd7xibsaegv_demodb_low.atp.oraclecloud.com))(security=(ssl_server_cert_dn="CN=adwc.uscom-east-1.oraclecloud.com, OU=Oracle BMCS US, O=Oracle Corporation, L=Redwood City, ST=California, C=US")))'
+  -c '(description=(retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=adb.us-phoenix-1.oraclecloud.com))(connect_data=(service_name=hvg9nd7xibsaegv_demodb_low.atp.oraclecloud.com))(security=(ssl_server_cert_dn="CN=adwc.uscom-east-1.oraclecloud.com, OU=Oracle BMCS US, O=Oracle Corporation, L=Redwood City, ST=California, C=US")))'
+```
+
+Enqueue a message via host/port/service name (localhost XE).
+
+```shell
+./aq dequeue \
+  -u aquser \
+  -p Str0ngPassword! \
+  -q AQADMIN.EVENT_QUEUE \
+  -H localhost \
+  -P 1521 \
+  -s XEPDB1
 ```
 
 ## CLI Commands and Options
 
-To get help, execute the CLI with `-h`. It will produce the following output:
+To get help, execute the CLI with `-h` or `--help`. It will produce the following output:
 
 ```shell
-Usage: aq-cli [-hvV] [-i=<ociProfilePath>] [-o=<ocid>] -p=<password>
-              [-P=<ociProfile>] -q=<queueName> -u=<username> [-U=<url>]
+Usage: aq-cli [-hvV] [-c=<connectString>] [-H=<host>] [-i=<ociProfilePath>]
+              [-o=<ocid>] [-O=<ociProfile>] -p=<password> [-P=<port>]
+              -q=<queueName> [-s=<serviceName>] -u=<username> [-U=<url>]
               [-w=<walletPassword>] [COMMAND]
 ...
+  -c, --connect-string=<connectString>
+                      The connection string to use to connect to the DB.
   -h, --help          Show this help message and exit.
+  -H, --host=<host>   The DB host name.
   -i, --oci-profile-path=<ociProfilePath>
-                      The path to the OCI Profile to use when using automatic
+                      The path to the OCI profile to use when using automatic
                         wallet download
-  -o, --ocid=<ocid>   The ADB OCID
-  -p, --password=<password>
-                      The ADB Password
-  -P, --oci-profile=<ociProfile>
-                      The OCI Profile to use when using automatic wallet
+  -o, --ocid=<ocid>   If provided, the ADB OCID will be used to automatically
+                        download Autonomous DB wallet
+  -O, --oci-profile=<ociProfile>
+                      The OCI profile to use when using automatic wallet
                         download
+  -p, --password=<password>
+                      The database user's password
+  -P, --port=<port>   The DB port.
   -q, --queue-name=<queueName>
-                      The ADB Queue Name
+                      The AQ queue name
+  -s, --service-name=<serviceName>
+                      The DB service name.
   -u, --username=<username>
-                      The ADB Username
-  -U, --url=<url>     The ADB URL
+                      The database user's username
+  -U, --url=<url>     The DB
   -v, --verbose       Enable verbose output
   -V, --version       Print version information and exit.
   -w, --wallet-password=<walletPassword>
