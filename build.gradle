@@ -83,10 +83,6 @@ task bumpVersion  {
         buildFile.setText(s)
     }
 }
-/*
-    to push new build:
-    $ ./gradlew bumpVersion && git tag $(./gradlew properties -q | grep "version:" | awk '{print $2}') && git push origin $(./gradlew properties -q | grep "version:" | awk '{print $2}')
-*/
 
 
 

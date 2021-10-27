@@ -29,10 +29,10 @@ import java.util.UUID;
 })
 public class AqCliCommand implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(AqCliCommand.class);
+    private static final String VERSION = "0.0.1";
 
     @Option(names = {"-v", "--verbose"}, description = "Enable verbose output", scope = picocli.CommandLine.ScopeType.INHERIT)
     boolean verbose;
-
     public String ocid;
     @Option(names = {"-o", "--ocid"}, description = "If provided, the ADB OCID will be used to automatically download Autonomous DB wallet", required = false, scope = picocli.CommandLine.ScopeType.INHERIT)
     public void setOcid(String ocid) {
@@ -105,6 +105,10 @@ public class AqCliCommand implements Runnable {
         if( options.size() == 0 || options.containsKey("h") || options.containsKey("help") ) {
             System.setProperty("aq.help", "true");
             isHelp = true;
+        }
+        if( options.containsKey("V") || options.containsKey("version") ) {
+            System.out.println(VERSION);
+            System.exit(0);
         }
         if(!isHelp) {
             System.setProperty("datasources.default.driver-class-name", "oracle.jdbc.driver.OracleDriver");
