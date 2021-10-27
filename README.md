@@ -55,7 +55,7 @@ java -jar build/libs/aq-cli-0.1-all.jar \
   -O DEFAULT \
   -i ~/.oci/config 
 ```
-Enqueue a message via a TLS connection.
+Dequeue a message via a TLS connection.
 
 ```shell
 java -jar build/libs/aq-cli-0.1-all.jar \
