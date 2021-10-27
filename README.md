@@ -81,7 +81,7 @@ Run it like you would any other binary.
 Enqueue a message with automatic wallet download.
 
 ```shell
-./aq enqueue -m '{"id":1, "wallet": true}' \
+aq enqueue -m '{"id":1, "wallet": true}' \
   -o ocid1.autonomousdatabase.oc1.phx... \
   -u aqdemouser \
   -p Passw3rdHidden! \
@@ -92,7 +92,7 @@ Enqueue a message with automatic wallet download.
 Enqueue a message via a TLS connection.
 
 ```shell
-./aq enqueue -m '{"id":1, "wallet": false}' \
+aq enqueue -m '{"id":1, "wallet": false}' \
   -u aqdemouser \
   -p Passw3rdHidden! \
   -q AQDEMOADMIN.EVENT_QUEUE \
@@ -102,7 +102,7 @@ Enqueue a message via a TLS connection.
 Enqueue a message via host/port/service name (localhost XE).
 
 ```shell
-./aq enqueue -m '{"id":1, "localhost": true}' \
+aq enqueue -m '{"id":1, "localhost": true}' \
   -u aquser \
   -p Passw3rdHidden! \
   -q AQADMIN.EVENT_QUEUE \
@@ -114,7 +114,7 @@ Enqueue a message via host/port/service name (localhost XE).
 Dequeue messages with automatic wallet download.
 
 ```shell
-./aq dequeue \
+aq dequeue \
   -o ocid1.autonomousdatabase.oc1.phx... \
   -u aqdemouser \
   -p Passw3rdHidden! \
@@ -125,7 +125,7 @@ Dequeue messages with automatic wallet download.
 Dequeue a message via a TLS connection.
 
 ```shell
-./aq dequeue \
+aq dequeue \
   -u aqdemouser \
   -p Passw3rdHidden! \
   -q AQDEMOADMIN.EVENT_QUEUE \
@@ -135,7 +135,7 @@ Dequeue a message via a TLS connection.
 Enqueue a message via host/port/service name (localhost XE).
 
 ```shell
-./aq dequeue \
+aq dequeue \
   -u aquser \
   -p Passw3rdHidden! \
   -q AQADMIN.EVENT_QUEUE \
