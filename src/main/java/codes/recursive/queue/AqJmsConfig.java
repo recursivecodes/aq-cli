@@ -1,6 +1,7 @@
 package codes.recursive.queue;
 
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.core.annotation.ReflectiveAccess;
 import io.micronaut.jms.annotations.JMSConnectionFactory;
@@ -13,6 +14,7 @@ import javax.sql.DataSource;
 
 @Factory
 @Introspected
+@Requires(missingProperty = "aq.help")
 public class AqJmsConfig {
 
     @ReflectiveAccess

@@ -1,6 +1,7 @@
 package codes.recursive;
 
 import codes.recursive.queue.AqProducer;
+import io.micronaut.context.annotation.Requires;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
@@ -10,6 +11,7 @@ import picocli.CommandLine.Option;
 import javax.inject.Inject;
 
 @Command(name = "enqueue", description = "Enqueues a message to AQ")
+@Requires(missingProperty = "aq.help")
 public class EnqueueCommand implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(EnqueueCommand.class);
     private String message;
