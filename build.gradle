@@ -4,17 +4,14 @@ plugins {
     id("io.micronaut.application") version "2.0.6"
 }
 
-version = "0.0.1-b4"
+version="0.0.1"
 group = "codes.recursive"
 
 repositories {
-    mavenLocal()
     mavenCentral()
-    /*
     maven {
         url "https://s01.oss.sonatype.org/content/repositories/snapshots"
     }
-    */
 }
 
 micronaut {
@@ -40,7 +37,7 @@ dependencies {
     implementation("io.micronaut.jms:micronaut-jms-core")
     implementation("javax.transaction:jta:1.1")
     implementation("com.oracle.database.messaging:aqapi:19.3.0.0")
-    implementation("io.micronaut.sql:micronaut-jdbc-ucp:4.0.2")
+    implementation("io.micronaut.sql:micronaut-jdbc-ucp:4.1.0-SNAPSHOT")
     implementation("io.micronaut.oraclecloud:micronaut-oraclecloud-sdk")
     implementation("io.micronaut.oraclecloud:micronaut-oraclecloud-atp:2.0.0")
     implementation(enforcedPlatform("com.oracle.database.jdbc:ojdbc-bom:21.1.0.0"))
@@ -75,6 +72,21 @@ java {
     sourceCompatibility = JavaVersion.toVersion("11")
     targetCompatibility = JavaVersion.toVersion("11")
 }
+
+task bumpVersion  {
+    doLast {
+        def v = buildFile.getText().find(version)
+        String minor = v.substring(v.lastIndexOf('.')+1)
+        int m = minor.toInteger()+1
+        String major = v.substring(0,v.length()-1)
+        String s=buildFile.getText().replaceFirst("version=\"$version\"","version=\"${major+m}\"")
+        buildFile.setText(s)
+    }
+}
+/*
+    to push new build:
+    $ ./gradlew bumpVersion && git tag $(./gradlew properties -q | grep "version:" | awk '{print $2}') && git push origin $(./gradlew properties -q | grep "version:" | awk '{print $2}')
+*/
 
 
 
