@@ -29,7 +29,7 @@ import java.util.UUID;
 })
 public class AqCliCommand implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(AqCliCommand.class);
-    private static final String VERSION = "0.0.1";
+    private static final String VERSION = "0.0.2";
 
     @Option(names = {"-v", "--verbose"}, description = "Enable verbose output", scope = picocli.CommandLine.ScopeType.INHERIT)
     boolean verbose;

@@ -1,10 +1,10 @@
 plugins {
     id("groovy") 
     id("com.github.johnrengelman.shadow") version "7.0.0"
-    id("io.micronaut.application") version "2.0.6"
+    id("io.micronaut.application") version "2.0.8"
 }
 
-version="0.0.1"
+version="0.0.2"
 group = "codes.recursive"
 
 repositories {
@@ -40,16 +40,8 @@ dependencies {
     implementation("io.micronaut.sql:micronaut-jdbc-ucp:4.1.0-SNAPSHOT")
     implementation("io.micronaut.oraclecloud:micronaut-oraclecloud-sdk")
     implementation("io.micronaut.oraclecloud:micronaut-oraclecloud-atp:2.0.0")
-    implementation(enforcedPlatform("com.oracle.database.jdbc:ojdbc-bom:21.1.0.0"))
-    implementation("com.oracle.database.jdbc:ojdbc11")
-    implementation("com.oracle.database.jdbc:ucp")
-    // Additional Jars for using Oracle Wallets
-    implementation("com.oracle.database.security:oraclepki")
-    implementation("com.oracle.database.security:osdt_core")
-    implementation("com.oracle.database.security:osdt_cert")
-
+    implementation("com.oracle.database.jdbc:ojdbc11-production:21.1.0.0")
     testImplementation("io.micronaut:micronaut-http-client")
-
 }
 
 nativeImage {
